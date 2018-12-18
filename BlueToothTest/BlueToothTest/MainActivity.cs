@@ -35,7 +35,14 @@ namespace BlueToothTest
             TextView currentCharacterName = FindViewById<TextView>(Resource.Id.text);
             currentCharacterName.Text = "Your Text";
 
+			var edtFirstText = FindViewById<EditText>(Resource.Id.edtFirstText);
 
+			var btnDisplay = FindViewById<Button>(Resource.Id.btnDisplay);
+
+			btnDisplay.Click += (e, o) =>
+			{
+				currentCharacterName.Text = edtFirstText.Text;
+			};
 
             System.Threading.Thread thread = new System.Threading.Thread(() =>
             {

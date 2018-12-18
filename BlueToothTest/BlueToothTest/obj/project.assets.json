@@ -460,20 +460,20 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\username\\.nuget\\packages\\": {}
+    "C:\\Users\\Aaron\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\username\\source\\repos\\AutoTarget\\BlueToothTest\\BlueToothTest\\BlueToothTest.csproj",
+      "projectUniqueName": "C:\\Users\\Aaron\\source\\repos\\AutoTarget\\BlueToothTest\\BlueToothTest\\BlueToothTest.csproj",
       "projectName": "BlueToothTest",
-      "projectPath": "C:\\Users\\username\\source\\repos\\AutoTarget\\BlueToothTest\\BlueToothTest\\BlueToothTest.csproj",
-      "packagesPath": "C:\\Users\\username\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\username\\source\\repos\\AutoTarget\\BlueToothTest\\BlueToothTest\\obj\\",
+      "projectPath": "C:\\Users\\Aaron\\source\\repos\\AutoTarget\\BlueToothTest\\BlueToothTest\\BlueToothTest.csproj",
+      "packagesPath": "C:\\Users\\Aaron\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Aaron\\source\\repos\\AutoTarget\\BlueToothTest\\BlueToothTest\\obj\\",
       "projectStyle": "PackageReference",
       "skipContentFileWrite": true,
       "configFilePaths": [
-        "C:\\Users\\username\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Aaron\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

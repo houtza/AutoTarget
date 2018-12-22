@@ -41,17 +41,19 @@ namespace BlueToothTest
 
 			btnDisplay.Click += (e, o) =>
 			{
-				currentCharacterName.Text = edtFirstText.Text;
+				//currentCharacterName.Text = edtFirstText.Text;
+				manager.sendDataToDevice("5");//----
 			};
 
             System.Threading.Thread thread = new System.Threading.Thread(() =>
             {
                 while (true)
                 {
-                    data = manager.getDataFromDevice();
-                    //manager.sendDataToDevice("H");//--
-                    
-                    RunOnUiThread(async () => { currentCharacterName.Text = data; });
+					int data = manager.getDataFromDevice();
+					//String data = manager.getDataFromDevice();
+
+					//Console.WriteLine(value);
+					RunOnUiThread(async () => { currentCharacterName.Text = data.ToString(); });
                 }
             });
 

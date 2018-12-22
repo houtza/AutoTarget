@@ -25,19 +25,19 @@ namespace BlueToothTest
         private BluetoothSocket mSocket;
         //convert byte[] to readable strings
         private BufferedReader reader;
-        //private BufferedWriter writer;//----------------------
+        private BufferedWriter writer;//----------------------
         private System.IO.Stream mStream;
         private InputStreamReader mReader;
 
         private System.IO.Stream oStream;
-        //private OutputStreamWriter oWriter;//-------------------
+        private OutputStreamWriter oWriter;//-------------------
         
 
 
         public BluetoothManager()
         {
             reader = null;
-            //writer = null;//---------------------------
+            writer = null;//---------------------------
 
         }
 
@@ -65,15 +65,36 @@ namespace BlueToothTest
         }
 
 
-        public String getDataFromDevice()
+        public int getDataFromDevice()
         {
-            return reader.ReadLine();
+			//byte[] inPutBuffer = new byte[32];
+			//mStream.Read(inPutBuffer, 0, 4);
+			//return inPutBuffer[0];
+			return mStream.ReadByte();
         }
 
-        //public void sendDataToDevice(String data)
-        //{
-           // writer.Write(data.ToCharArray());//Wow cant belive that worked!!------------------------
-        //}
+
+
+		//public String getDataFromDevice()
+		//{
+			//return reader.ReadLine();
+			
+		//}
+
+
+		public void sendDataToDevice(String data)//---------------
+        {
+
+			
+			//byte[] buffer = Encoding.ASCII.GetBytes(data);
+		
+			//oStream.Write(buffer,0,buffer.Length);//It works!!
+			//oStream.Flush();
+			
+			oStream.WriteByte(65);
+
+			
+		}
 
 
         private void openDeviceConnection(BluetoothDevice btDevice)
@@ -90,9 +111,13 @@ namespace BlueToothTest
                 //mSocket.OutputStream;
                 oStream = mSocket.OutputStream;//----------------------------------
 
-               // oWriter = new OutputStreamWriter(oStream);//--------------------------
-                //writer = new BufferedWriter(oWriter);//-------------------------------
+				
+				
 
+				oWriter = new OutputStreamWriter(oStream);//--------------------------
+				
+                //writer = new BufferedWriter(oWriter);//-------------------------------
+				////BufferedOutputStream()
                 mReader = new InputStreamReader(mStream);
                 reader = new BufferedReader(mReader);
             }
@@ -103,7 +128,7 @@ namespace BlueToothTest
                 close(mStream);
                 close(mReader);
                 close(oStream);
-               // close(oWriter);----------------------------------
+                close(oWriter);//----------------------------------
                 throw e;
             }
         }

@@ -18,9 +18,18 @@ namespace BlueToothTest
     {
         private String dataPast = null;
         private String data = null;
-        protected override void OnCreate(Bundle savedInstanceState)
+		enum Game { whackAmole, remoteControll };
+		enum TargetState { waitForConnection, sendGameMode, gameMode };
+		//public delegate void MailReceivedDelegate(byte dataReceived);
+		public TargetStateManager targetStateManager = new TargetStateManager();
+		public MailBox mailBox = new MailBox();
+		public TargetManager targetManager = new TargetManager();
+
+		protected override void OnCreate(Bundle savedInstanceState)
         {
-            base.OnCreate(savedInstanceState);
+			mailBox.MailReceived += OnMailReceived;
+
+			base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
 
             Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
@@ -53,14 +62,67 @@ namespace BlueToothTest
 					//String data = manager.getDataFromDevice();
 
 					//Console.WriteLine(value);
-					RunOnUiThread(async () => { currentCharacterName.Text = data.ToString(); });
-                }
+					//RunOnUiThread(async () => { currentCharacterName.Text = data.ToString(); });
+					//RunOnUiThread(async () => { currentCharacterName.Text = Convert.ToString(data,2); });
+
+					RunOnUiThread(async () => { mailBox.Mail = (byte)data; });
+
+				}
             });
 
             thread.IsBackground = true;
             thread.Start();
 
+			
+
         }
+
+		//else if(targetStateManager.State == (int)TargetState.sendGameMode && (dataReceived & 0b00001111) == 0b00001111)
+		public void OnMailReceived(byte dataReceived)
+		{
+			targetStateManager.updateState(dataReceived);
+			if (targetStateManager.InGameMode)
+			{
+				targetManager.SetTargets(dataReceived);
+			}
+			else if (targetStateManager.State == (int)TargetState.sendGameMode && (dataReceived & 0b00001111) == 0b00001111)
+			{
+				DynamicalyPopulateTargets(2); //Dynamicaly generate target UI
+				//Send Game mode
+			}
+			else if(targetStateManager.State == (int)TargetState.gameMode && dataReceived == 0b11111111)
+			{
+				targetStateManager.InGameMode = true;
+			}
+			else
+			{
+				//Corrupted
+			}
+
+
+				TextView currentCharacterName = FindViewById<TextView>(Resource.Id.text);
+			currentCharacterName.Text = Convert.ToString(dataReceived, 2);
+		}
+		
+
+		public void DynamicalyPopulateTargets(int targetToAdd)
+		{
+			LinearLayout layoutBase = FindViewById<LinearLayout>(Resource.Id.layoutBase);
+			for(int i = 0; i < targetToAdd; i++)
+			{
+				
+				var FakeTarget = new TextView(this);
+				FakeTarget.Text = ("Target" + i.ToString());
+				FakeTarget.Id = i + 1;
+
+				Target target = new Target(FakeTarget);
+				
+				layoutBase.AddView(FakeTarget);
+
+				targetManager.TargetList.Add(target);
+			}
+		}
+
 
         public override bool OnCreateOptionsMenu(IMenu menu)
         {

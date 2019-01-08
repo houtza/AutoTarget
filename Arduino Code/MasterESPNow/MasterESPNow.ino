@@ -51,24 +51,34 @@
 
 // Global copy of slave
 #define NUMSLAVES 20
-esp_now_peer_info_t slaves[NUMSLAVES] = {};
-int SlaveCnt = 0;
-int LED = 2;
-bool flag = true;
-bool LEDToggle =false;
-bool mailToSend = false;
-
 #define CHANNEL 1//was 3
 #define PRINTSCANRESULTS 0
+
+esp_now_peer_info_t slaves[NUMSLAVES] = {};
+
+int waitForPhoneInitiation = 0;
+int setUpTargets = 1;
+int waitForStartFromPhone = 2;
+int beginGame = 3;
+int gameState = 0;
+int gameMode = 0;
+
+int SlaveCnt = 0;
+int LED = 2;
+bool scanForSlaveFlag = true;
+bool LEDToggle =false;
+bool mailToSend = false;
+byte rxbyte = 0;  // stores received byte from HC-06 bluetooth module
+byte HCO6_tx_byte = 0;  // stores sent byte to HC-06 bluetooth module
 
 // Init ESP Now with fallback
 void InitESPNow() {
   WiFi.disconnect();
   if (esp_now_init() == ESP_OK) {
-    Serial.println("ESPNow Init Success");
+    //Serial.println("ESPNow Init Success");
   }
   else {
-    Serial.println("ESPNow Init Failed");
+    //Serial.println("ESPNow Init Failed");
     // Retry InitESPNow, add a counte and then restart?
     // InitESPNow();
     // or Simply Restart
@@ -82,11 +92,11 @@ void ScanForSlave() {
   //reset slaves
   memset(slaves, 0, sizeof(slaves));
   SlaveCnt = 0;
-  Serial.println("");
+  //Serial.println("");
   if (scanResults == 0) {
-    Serial.println("No WiFi devices in AP Mode found");
+    //Serial.println("No WiFi devices in AP Mode found");
   } else {
-    Serial.print("Found "); Serial.print(scanResults); Serial.println(" devices ");
+    //Serial.print("Found "); Serial.print(scanResults); Serial.println(" devices ");
     for (int i = 0; i < scanResults; ++i) {
       // Print SSID and RSSI for each device found
       String SSID = WiFi.SSID(i);
@@ -94,13 +104,13 @@ void ScanForSlave() {
       String BSSIDstr = WiFi.BSSIDstr(i);
 
       if (PRINTSCANRESULTS) {
-        Serial.print(i + 1); Serial.print(": "); Serial.print(SSID); Serial.print(" ["); Serial.print(BSSIDstr); Serial.print("]"); Serial.print(" ("); Serial.print(RSSI); Serial.print(")"); Serial.println("");
+        //Serial.print(i + 1); Serial.print(": "); Serial.print(SSID); Serial.print(" ["); Serial.print(BSSIDstr); Serial.print("]"); Serial.print(" ("); Serial.print(RSSI); Serial.print(")"); Serial.println("");
       }
       delay(10);
       // Check if the current device starts with `Slave`
       if (SSID.indexOf("Slave") == 0) {
         // SSID of interest
-        Serial.print(i + 1); Serial.print(": "); Serial.print(SSID); Serial.print(" ["); Serial.print(BSSIDstr); Serial.print("]"); Serial.print(" ("); Serial.print(RSSI); Serial.print(")"); Serial.println("");
+        //Serial.print(i + 1); Serial.print(": "); Serial.print(SSID); Serial.print(" ["); Serial.print(BSSIDstr); Serial.print("]"); Serial.print(" ("); Serial.print(RSSI); Serial.print(")"); Serial.println("");
         // Get BSSID => Mac Address of the Slave
         int mac[6];
 
@@ -117,9 +127,9 @@ void ScanForSlave() {
   }
 
   if (SlaveCnt > 0) {
-    Serial.print(SlaveCnt); Serial.println(" Slave(s) found, processing..");
+    //Serial.print(SlaveCnt); Serial.println(" Slave(s) found, processing..");
   } else {
-    Serial.println("No Slave Found, trying again.");
+    //Serial.println("No Slave Found, trying again.");
   }
 
   // clean up ram
@@ -149,27 +159,27 @@ void manageSlave() {
         esp_err_t addStatus = esp_now_add_peer(peer);
         if (addStatus == ESP_OK) {
           // Pair success
-          Serial.println("Pair success");
+          //Serial.println("Pair success");
         } else if (addStatus == ESP_ERR_ESPNOW_NOT_INIT) {
           // How did we get so far!!
-          Serial.println("ESPNOW Not Init");
+          //Serial.println("ESPNOW Not Init");
         } else if (addStatus == ESP_ERR_ESPNOW_ARG) {
-          Serial.println("Add Peer - Invalid Argument");
+          //Serial.println("Add Peer - Invalid Argument");
         } else if (addStatus == ESP_ERR_ESPNOW_FULL) {
-          Serial.println("Peer list full");
+         // Serial.println("Peer list full");
         } else if (addStatus == ESP_ERR_ESPNOW_NO_MEM) {
-          Serial.println("Out of memory");
+          //Serial.println("Out of memory");
         } else if (addStatus == ESP_ERR_ESPNOW_EXIST) {
-          Serial.println("Peer Exists");
+          //Serial.println("Peer Exists");
         } else {
-          Serial.println("Not sure what happened");
+          //Serial.println("Not sure what happened");
         }
         delay(100);
       }
     }
   } else {
     // No slave found to process
-    Serial.println("No Slave found to process");
+   // Serial.println("No Slave found to process");
   }
 }
 
@@ -185,22 +195,22 @@ void sendData(long slaveNumber) {
       //Serial.println(data);
     //}
     esp_err_t result = esp_now_send(peer_addr, &data, sizeof(data));
-    Serial.print("Send Status: ");
+    //Serial.print("Send Status: ");
     if (result == ESP_OK) {
-      Serial.println("Success");
+      //Serial.println("Success");
     } else if (result == ESP_ERR_ESPNOW_NOT_INIT) {
       // How did we get so far!!
-      Serial.println("ESPNOW not Init.");
+      //Serial.println("ESPNOW not Init.");
     } else if (result == ESP_ERR_ESPNOW_ARG) {
-      Serial.println("Invalid Argument");
+      //Serial.println("Invalid Argument");
     } else if (result == ESP_ERR_ESPNOW_INTERNAL) {
-      Serial.println("Internal Error");
+      //Serial.println("Internal Error");
     } else if (result == ESP_ERR_ESPNOW_NO_MEM) {
-      Serial.println("ESP_ERR_ESPNOW_NO_MEM");
+      //Serial.println("ESP_ERR_ESPNOW_NO_MEM");
     } else if (result == ESP_ERR_ESPNOW_NOT_FOUND) {
-      Serial.println("Peer not found.");
+      //Serial.println("Peer not found.");
     } else {
-      Serial.println("Not sure what happened");
+      //Serial.println("Not sure what happened");
     }
     delay(100);
   
@@ -211,8 +221,8 @@ void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
   char macStr[18];
   snprintf(macStr, sizeof(macStr), "%02x:%02x:%02x:%02x:%02x:%02x",
            mac_addr[0], mac_addr[1], mac_addr[2], mac_addr[3], mac_addr[4], mac_addr[5]);
-  Serial.print("Last Packet Sent to: "); Serial.println(macStr);
-  Serial.print("Last Packet Send Status: "); Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail");
+  //Serial.print("Last Packet Sent to: "); Serial.println(macStr);
+  //Serial.print("Last Packet Send Status: "); Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail");
 }
 
 
@@ -220,9 +230,9 @@ void OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len) {
   char macStr[18];
   snprintf(macStr, sizeof(macStr), "%02x:%02x:%02x:%02x:%02x:%02x",
            mac_addr[0], mac_addr[1], mac_addr[2], mac_addr[3], mac_addr[4], mac_addr[5]);
-  Serial.print("Last Packet Recv from: "); Serial.println(macStr);
-  Serial.print("Last Packet Recv Data: "); Serial.println(*data);
-  Serial.println("");
+ // Serial.print("Last Packet Recv from: "); Serial.println(macStr);
+ // Serial.print("Last Packet Recv Data: "); Serial.println(*data);
+  //Serial.println("");
   mailToSend = true;
   digitalWrite(LED,HIGH);
  
@@ -231,14 +241,15 @@ void OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len) {
 
 void setup() {
   pinMode(LED,OUTPUT);
-  Serial.begin(115200);
+  Serial.begin(9500);
+  //Serial.begin(115200);
   //uint8_t new_mac[8] = {0x30,0xAE,0xA4,0x11,0x11,0x11};//---------------------------------------------
   //esp_base_mac_addr_set(new_mac);
   //Set device in STA mode to begin with
   WiFi.mode(WIFI_STA);
-  Serial.println("ESPNow/Multi-Slave/Master Example");
+  //Serial.println("ESPNow/Multi-Slave/Master Example");
   // This is the mac address of the Master in Station Mode
-  Serial.print("STA MAC: "); Serial.println(WiFi.macAddress());
+  //Serial.print("STA MAC: "); Serial.println(WiFi.macAddress());
   // Init ESPNow with a fallback logic
   InitESPNow();
   // Once ESPNow is successfully Init, we will register for Send CB to
@@ -248,43 +259,50 @@ void setup() {
 }
 
 void loop() {
-  // In the loop we scan for slave
-  if(flag){
-    ScanForSlave();
-    //if(SlaveCnt > 0){
-      //manageSlave();
-      //for(int i;i<SlaveCnt;i++){
-        //sendData(i);
-      //}
-    //}
+  rxbyte = 0b00000000;
+  if (Serial.available()) {
+    //---------------------------------------------------
+    rxbyte = Serial.read();
+  }
+  //delay(50);
+  //Serial.write(rxbyte);
+  //delay(50);
+  if(gameState == waitForPhoneInitiation && (rxbyte & 0b00001111) == 0b00001111){
+    gameState = setUpTargets;
+    gameMode = (rxbyte & 0b11110000) >> 4; //Set game mode
+    //Serial.write(11);
+    delay(10);
+    Serial.write(10);
+  }
+
+  
+  if(scanForSlaveFlag && gameState == setUpTargets){
+    ScanForSlave(); //In the loop we can scan at the beginning for slaves   
     manageSlave();
-    sendData(random(SlaveCnt));
-    flag = false;
+    sendData(random(SlaveCnt)); //Activate a randome slave (pop up)
+    scanForSlaveFlag = false;
+    byte slaveCount = (byte)SlaveCnt;
+    slaveCount = (slaveCount <<4) | 0b00001111;
+    Serial.write(slaveCount);
   }
   
-  // If Slave is found, it would be populate in `slave` variable
-  // We will check if `slave` is defined and then we proceed further
+  
   if (SlaveCnt > 0 && mailToSend) { // check if slave channel is defined
     // `slave` is defined
     // Add slave as peer if it has not been added already
     manageSlave();
     // pair success or already paired
     // Send data to device
-    
-    //sendData(1);
-    //if(mailToSend){
-      //long randNumber;
-      //randNumber = random(SlaveCnt);
-      sendData(random(SlaveCnt));
-      digitalWrite(LED,LOW);
-      mailToSend = false;
+       
+    sendData(random(SlaveCnt));
+    digitalWrite(LED,LOW);
+    mailToSend = false;
     //}
     
   } else {
     // No slave found to process
   }
 
-  // wait for 3seconds to run the logic again
- 
-  delay(1000);
+  
+  delay(10); // wait for 1 seconds to run the logic again
 }

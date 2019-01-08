@@ -19,8 +19,27 @@ namespace BlueToothTest
 		{
 			
 			int targetNumber = data >> 4;
+			int hitLocation = (data & 0b00000110) >> 1;
+
 			Target tempTarget = TargetList[targetNumber-1];
-			tempTarget.Actuate();
+
+			if (hitLocation > 0)
+			{
+				tempTarget.Retract();
+			}
+			else
+			{
+				if (tempTarget.TargetPosition)
+				{
+					tempTarget.Retract();
+				}
+				else
+				{
+					tempTarget.Extend();
+				}
+			}
+			
+
 			
 
 			

@@ -26,19 +26,20 @@ namespace BlueToothTest
 
 		public int HitCount { get; set; }
 
-		public void Actuate()
+		public void Retract()
 		{
-			TargetPosition = !TargetPosition;
-			if (!TargetPosition)
-			{
-				View.SetBackgroundColor(Color.Red);
-				HitCount = HitCount + 1;
-				View.Text = HitCount.ToString();
-			}
-			else
-			{
-				View.SetBackgroundColor(Color.Green);
-			}
+			TargetPosition = false;
+			
+			View.SetBackgroundColor(Color.Red);
+			HitCount = HitCount + 1;
+			View.Text = HitCount.ToString();
+		
+		}
+
+		public void Extend()
+		{
+			TargetPosition = true;
+			View.SetBackgroundColor(Color.Green);
 		}
 		
 	}

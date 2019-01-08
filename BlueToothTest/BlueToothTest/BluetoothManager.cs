@@ -84,14 +84,16 @@ namespace BlueToothTest
 
 		public void sendDataToDevice(String data)//---------------
         {
-
+			int intData = 0;
+			int.TryParse(data,out intData);
+			byte byteData = (byte)intData;
 			
 			//byte[] buffer = Encoding.ASCII.GetBytes(data);
 		
 			//oStream.Write(buffer,0,buffer.Length);//It works!!
 			//oStream.Flush();
 			
-			oStream.WriteByte(65);
+			oStream.WriteByte(byteData);
 
 			
 		}

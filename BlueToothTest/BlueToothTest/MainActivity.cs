@@ -18,6 +18,7 @@ namespace BlueToothTest
     {
         private String dataPast = null;
         private String data = null;
+		public bool exceptDataFromESP = false;
 		enum Game { whackAmole, remoteControll };
 		enum TargetState { waitForConnection, sendGameMode, gameMode };
 		//public delegate void MailReceivedDelegate(byte dataReceived);
@@ -50,8 +51,9 @@ namespace BlueToothTest
 
 			btnDisplay.Click += (e, o) =>
 			{
+				exceptDataFromESP = true;
 				//currentCharacterName.Text = edtFirstText.Text;
-				manager.sendDataToDevice("5");//----
+				manager.sendDataToDevice(edtFirstText.Text);//----
 			};
 
             System.Threading.Thread thread = new System.Threading.Thread(() =>
@@ -80,27 +82,39 @@ namespace BlueToothTest
 		//else if(targetStateManager.State == (int)TargetState.sendGameMode && (dataReceived & 0b00001111) == 0b00001111)
 		public void OnMailReceived(byte dataReceived)
 		{
-			targetStateManager.updateState(dataReceived);
-			if (targetStateManager.InGameMode)
+			if (exceptDataFromESP)
 			{
-				targetManager.SetTargets(dataReceived);
+				targetStateManager.updateState(dataReceived);
+				if (targetStateManager.InGameMode)
+				{
+					targetManager.SetTargets(dataReceived);
+				}
+				else if (targetStateManager.State == (int)TargetState.sendGameMode && (dataReceived & 0b00001111) == 0b00001111)
+				{
+					Android.App.AlertDialog.Builder alertDialog = new Android.App.AlertDialog.Builder(this);
+					alertDialog.SetTitle("No targets found");
+					alertDialog.SetMessage("No targets found, please restart the app and try again");
+					alertDialog.SetNeutralButton("OK", delegate {
+						alertDialog.Dispose();
+					});
+					alertDialog.Show();
+				}
+				else if (targetStateManager.State == (int)TargetState.sendGameMode && (dataReceived & 0b00001111) == 0b00011111)// up to 15 targets
+				{
+					DynamicalyPopulateTargets((dataReceived>>4)); //Dynamicaly generate target UI
+												  //Send Game mode
+				}
+				else if (targetStateManager.State == (int)TargetState.gameMode && dataReceived == 0b11111111)
+				{
+					targetStateManager.InGameMode = true;
+				}
+				else
+				{
+					//Corrupted
+				}
 			}
-			else if (targetStateManager.State == (int)TargetState.sendGameMode && (dataReceived & 0b00001111) == 0b00001111)
-			{
-				DynamicalyPopulateTargets(2); //Dynamicaly generate target UI
-				//Send Game mode
-			}
-			else if(targetStateManager.State == (int)TargetState.gameMode && dataReceived == 0b11111111)
-			{
-				targetStateManager.InGameMode = true;
-			}
-			else
-			{
-				//Corrupted
-			}
-
-
-				TextView currentCharacterName = FindViewById<TextView>(Resource.Id.text);
+			
+			TextView currentCharacterName = FindViewById<TextView>(Resource.Id.text);
 			currentCharacterName.Text = Convert.ToString(dataReceived, 2);
 		}
 		
@@ -147,6 +161,12 @@ namespace BlueToothTest
             Snackbar.Make(view, "Replace with your own action", Snackbar.LengthLong)
                 .SetAction("Action", (Android.Views.View.IOnClickListener)null).Show();
         }
+
+		public void closeApplication()
+		{
+			var activity = (Activity)Android.Context;
+			activity.FinishAffinity();
+		}
 	}
 }
 

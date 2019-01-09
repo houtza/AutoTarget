@@ -71,6 +71,7 @@ bool mailToSend = false;
 byte rxbyte = 0;  // stores received byte from HC-06 bluetooth module
 byte HCO6_tx_byte = 0;  // stores sent byte to HC-06 bluetooth module
 
+char macAddressList[20][18];
 // Init ESP Now with fallback
 void InitESPNow() {
   WiFi.disconnect();
@@ -279,6 +280,17 @@ void loop() {
   if(scanForSlaveFlag && gameState == setUpTargets){
     ScanForSlave(); //In the loop we can scan at the beginning for slaves   
     manageSlave();
+
+
+    for(int slaveNum = 0;slaveNum<SlaveCnt;slaveNum++){ //Get slave mac addresses, and store all of them as a string in a 2D char array
+       uint8_t *mac_addr = slaves[slaveNum].peer_addr;
+
+       snprintf(macAddressList[slaveNum], sizeof(macAddressList[slaveNum]), "%02x:%02x:%02x:%02x:%02x:%02x",
+           mac_addr[0], mac_addr[1], mac_addr[2], mac_addr[3], mac_addr[4], mac_addr[5]);
+      
+    }
+    
+    
     sendData(random(SlaveCnt)); //Activate a randome slave (pop up)
     scanForSlaveFlag = false;
     byte slaveCount = (byte)SlaveCnt;

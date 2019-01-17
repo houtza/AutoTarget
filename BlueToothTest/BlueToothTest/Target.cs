@@ -16,15 +16,16 @@ namespace BlueToothTest
 	public class Target
 	{
 
+		public TextView View { get; set; }
+		public bool TargetPosition { get; set; }  //up = true, down = false
+		public int HitCount { get; set; }
+
 		public Target(TextView targetView)
 		{
 			View = targetView;
 			TargetPosition = false;
 		}
-		public TextView View { get; set; }
-		public bool TargetPosition { get; set; }  //up = true, down = false
-
-		public int HitCount { get; set; }
+		
 
 		public void Retract()
 		{

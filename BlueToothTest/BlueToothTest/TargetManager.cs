@@ -23,7 +23,7 @@ namespace BlueToothTest
 
 			Target tempTarget = TargetList[targetNumber-1];
 
-			if (hitLocation > 0) ///Test case
+			if (hitLocation > 0) 
 			{
 				tempTarget.Retract();
 			}
@@ -38,11 +38,7 @@ namespace BlueToothTest
 					tempTarget.Extend();
 				}
 			}
-			
-
-			
-
-			
+						
 		}
 
 	}

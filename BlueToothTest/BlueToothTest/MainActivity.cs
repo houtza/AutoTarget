@@ -9,164 +9,81 @@ using Android.Views;
 using Android.Widget;
 
 using System.Threading.Tasks;
-
+using Android.Content;
 
 namespace BlueToothTest
 {
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar", MainLauncher = true)]
     public class MainActivity : AppCompatActivity
     {
-        private String dataPast = null;
-        private String data = null;
-		public bool exceptDataFromESP = false;
-		enum Game { whackAmole, remoteControll };
-		enum TargetState { waitForConnection, sendGameMode, gameMode };
-		//public delegate void MailReceivedDelegate(byte dataReceived);
-		public TargetStateManager targetStateManager = new TargetStateManager();
-		public MailBox mailBox = new MailBox();
-		public TargetManager targetManager = new TargetManager();
+
+		int gameMode = -1;
+		
 
 		protected override void OnCreate(Bundle savedInstanceState)
         {
-			mailBox.MailReceived += OnMailReceived;
+			
 
 			base.OnCreate(savedInstanceState);
-            SetContentView(Resource.Layout.activity_main);
+            SetContentView(Resource.Layout.content_main);
 
-            Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
-            SetSupportActionBar(toolbar);
+            
 
-            FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
-            fab.Click += FabOnClick;
+            
 
-            BluetoothManager manager = new BluetoothManager();
-            manager.getAllPairedDevices();
-
-            TextView currentCharacterName = FindViewById<TextView>(Resource.Id.text);
-            currentCharacterName.Text = "Your Text";
+            
 
 			var edtFirstText = FindViewById<EditText>(Resource.Id.edtFirstText);
 
-			var btnDisplay = FindViewById<Button>(Resource.Id.btnDisplay);
+			var startBtn = FindViewById<Button>(Resource.Id.startBtn);
 
-			btnDisplay.Click += (e, o) =>
+
+			Spinner spinner = FindViewById<Spinner>(Resource.Id.spinner);
+
+			spinner.ItemSelected += new EventHandler<AdapterView.ItemSelectedEventArgs>(spinner_ItemSelected);
+			var adapter = ArrayAdapter.CreateFromResource(
+					this, Resource.Array.game_prompt_array, Android.Resource.Layout.SimpleSpinnerItem);
+
+			adapter.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
+			spinner.Adapter = adapter;
+
+			startBtn.Click += (e, o) =>
 			{
-				exceptDataFromESP = true;
-				//currentCharacterName.Text = edtFirstText.Text;
-				manager.sendDataToDevice(edtFirstText.Text);//----
+
+				if(gameMode != -1)
+				{
+					Intent targetActivity = new Intent(this, typeof(target_control_activity));
+					targetActivity.PutExtra("gameMode", gameMode);
+					StartActivity(targetActivity);
+				}
+				
+
 			};
 
-            System.Threading.Thread thread = new System.Threading.Thread(() =>
-            {
-                while (true)
-                {
-					int data = manager.getDataFromDevice();
-					//String data = manager.getDataFromDevice();
+            			
 
-					//Console.WriteLine(value);
-					//RunOnUiThread(async () => { currentCharacterName.Text = data.ToString(); });
-					//RunOnUiThread(async () => { currentCharacterName.Text = Convert.ToString(data,2); });
+        }
 
-					RunOnUiThread(async () => { mailBox.Mail = (byte)data; });
 
-				}
-            });
+		private void spinner_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
+		{
 
-            thread.IsBackground = true;
-            thread.Start();
-
+			Spinner spinner = (Spinner)sender;
 			
-
-        }
-
-		//else if(targetStateManager.State == (int)TargetState.sendGameMode && (dataReceived & 0b00001111) == 0b00001111)
-		public void OnMailReceived(byte dataReceived)
-		{
-			if (exceptDataFromESP)
-			{
-				targetStateManager.updateState(dataReceived);
-				if (targetStateManager.InGameMode)
-				{
-					targetManager.SetTargets(dataReceived);
-				}
-				else if (targetStateManager.State == (int)TargetState.sendGameMode && (dataReceived | 0b00001111) == 0b00001111)
-				{
-					Android.App.AlertDialog.Builder alertDialog = new Android.App.AlertDialog.Builder(this);
-					alertDialog.SetTitle("No targets found");
-					alertDialog.SetMessage("No targets found, please restart the app and try again");
-					alertDialog.SetNeutralButton("OK", delegate {
-						alertDialog.Dispose();
-					});
-					alertDialog.Show();
-				}
-				else if (targetStateManager.State == (int)TargetState.sendGameMode && (dataReceived & 0b00001111) == 0b00001111)// up to 15 targets
-				{
-					DynamicalyPopulateTargets((dataReceived>>4)); //Dynamicaly generate target UI
-												  //Send Game mode
-				}
-				else if (targetStateManager.State == (int)TargetState.gameMode && dataReceived == 0b11111111)
-				{
-					targetStateManager.InGameMode = true;
-				}
-				else
-				{
-					//Corrupted
-				}
-			}
-			
-			TextView currentCharacterName = FindViewById<TextView>(Resource.Id.text);
-			currentCharacterName.Text = Convert.ToString(dataReceived, 2);
-		}
-		
-
-		public void DynamicalyPopulateTargets(int targetToAdd)
-		{
-			LinearLayout layoutBase = FindViewById<LinearLayout>(Resource.Id.layoutBase);
-			for(int i = 0; i < targetToAdd; i++)
-			{
-				
-				var FakeTarget = new TextView(this);
-				FakeTarget.Text = ("Target" + i.ToString());
-				FakeTarget.Id = i + 1;
-
-				Target target = new Target(FakeTarget);
-				
-				layoutBase.AddView(FakeTarget);
-
-				targetManager.TargetList.Add(target);
-			}
+			gameMode = e.Position;
+			//string toast = string.Format("The planet is {0}", spinner.GetItemAtPosition(e.Position));
+			//Toast.MakeText(this, toast, ToastLength.Long).Show();
 		}
 
 
-        public override bool OnCreateOptionsMenu(IMenu menu)
-        {
-            MenuInflater.Inflate(Resource.Menu.menu_main, menu);
-            return true;
-        }
 
-        public override bool OnOptionsItemSelected(IMenuItem item)
-        {
-            int id = item.ItemId;
-            if (id == Resource.Id.action_settings)
-            {
-                return true;
-            }
 
-            return base.OnOptionsItemSelected(item);
-        }
 
-        private void FabOnClick(object sender, EventArgs eventArgs)
-        {
-            View view = (View) sender;
-            Snackbar.Make(view, "Replace with your own action", Snackbar.LengthLong)
-                .SetAction("Action", (Android.Views.View.IOnClickListener)null).Show();
-        }
 
-		public void closeApplication()
-		{
-			//var activity = (Activity)Android.Context;
-			//activity.FinishAffinity();
-		}
+
+
+
+
 	}
 }
 

@@ -105,6 +105,22 @@ namespace BlueToothTest
 			}
 		}
 		
+		public partial class Array
+		{
+			
+			// aapt resource value: 0x7f0e0000
+			public const int game_prompt_array = 2131623936;
+			
+			static Array()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Array()
+			{
+			}
+		}
+		
 		public partial class Attribute
 		{
 			
@@ -2381,8 +2397,8 @@ namespace BlueToothTest
 			// aapt resource value: 0x7f08005c
 			public const int action_mode_close_button = 2131230812;
 			
-			// aapt resource value: 0x7f0800b5
-			public const int action_settings = 2131230901;
+			// aapt resource value: 0x7f0800b7
+			public const int action_settings = 2131230903;
 			
 			// aapt resource value: 0x7f0800a1
 			public const int action_text = 2131230881;
@@ -2420,8 +2436,8 @@ namespace BlueToothTest
 			// aapt resource value: 0x7f08003d
 			public const int bottom = 2131230781;
 			
-			// aapt resource value: 0x7f080090
-			public const int btnDisplay = 2131230864;
+			// aapt resource value: 0x7f0800b3
+			public const int btnDisplay = 2131230899;
 			
 			// aapt resource value: 0x7f080063
 			public const int buttonPanel = 2131230819;
@@ -2495,8 +2511,8 @@ namespace BlueToothTest
 			// aapt resource value: 0x7f08007e
 			public const int edit_query = 2131230846;
 			
-			// aapt resource value: 0x7f08008f
-			public const int edtFirstText = 2131230863;
+			// aapt resource value: 0x7f0800b2
+			public const int edtFirstText = 2131230898;
 			
 			// aapt resource value: 0x7f080030
 			public const int end = 2131230768;
@@ -2588,14 +2604,14 @@ namespace BlueToothTest
 			// aapt resource value: 0x7f080061
 			public const int list_item = 2131230817;
 			
-			// aapt resource value: 0x7f0800b4
-			public const int masked = 2131230900;
+			// aapt resource value: 0x7f0800b6
+			public const int masked = 2131230902;
 			
 			// aapt resource value: 0x7f0800a5
 			public const int media_actions = 2131230885;
 			
-			// aapt resource value: 0x7f0800b2
-			public const int message = 2131230898;
+			// aapt resource value: 0x7f0800b4
+			public const int message = 2131230900;
 			
 			// aapt resource value: 0x7f080031
 			public const int middle = 2131230769;
@@ -2744,6 +2760,9 @@ namespace BlueToothTest
 			// aapt resource value: 0x7f080064
 			public const int spacer = 2131230820;
 			
+			// aapt resource value: 0x7f08008f
+			public const int spinner = 2131230863;
+			
 			// aapt resource value: 0x7f080008
 			public const int split_action_bar = 2131230728;
 			
@@ -2758,6 +2777,9 @@ namespace BlueToothTest
 			
 			// aapt resource value: 0x7f08004b
 			public const int start = 2131230795;
+			
+			// aapt resource value: 0x7f080090
+			public const int startBtn = 2131230864;
 			
 			// aapt resource value: 0x7f0800a4
 			public const int status_bar_latest_event_content = 2131230884;
@@ -2849,8 +2871,8 @@ namespace BlueToothTest
 			// aapt resource value: 0x7f080016
 			public const int view_offset_helper = 2131230742;
 			
-			// aapt resource value: 0x7f0800b3
-			public const int visible = 2131230899;
+			// aapt resource value: 0x7f0800b5
+			public const int visible = 2131230901;
 			
 			// aapt resource value: 0x7f08003c
 			public const int withText = 2131230780;
@@ -3098,7 +3120,10 @@ namespace BlueToothTest
 			public const int support_simple_spinner_dropdown_item = 2130968636;
 			
 			// aapt resource value: 0x7f04003d
-			public const int tooltip = 2130968637;
+			public const int target_control_activity = 2130968637;
+			
+			// aapt resource value: 0x7f04003e
+			public const int tooltip = 2130968638;
 			
 			static Layout()
 			{
@@ -3113,8 +3138,8 @@ namespace BlueToothTest
 		public partial class Menu
 		{
 			
-			// aapt resource value: 0x7f0e0000
-			public const int menu_main = 2131623936;
+			// aapt resource value: 0x7f0f0000
+			public const int menu_main = 2131689472;
 			
 			static Menu()
 			{
@@ -3252,6 +3277,9 @@ namespace BlueToothTest
 			
 			// aapt resource value: 0x7f090020
 			public const int character_counter_pattern = 2131296288;
+			
+			// aapt resource value: 0x7f090029
+			public const int game_mode_prompt = 2131296297;
 			
 			// aapt resource value: 0x7f090021
 			public const int password_toggle_content_description = 2131296289;

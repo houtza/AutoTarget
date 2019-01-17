@@ -89,7 +89,7 @@ namespace BlueToothTest
 				{
 					targetManager.SetTargets(dataReceived);
 				}
-				else if (targetStateManager.State == (int)TargetState.sendGameMode && (dataReceived & 0b00001111) == 0b00001111)
+				else if (targetStateManager.State == (int)TargetState.sendGameMode && (dataReceived | 0b00001111) == 0b00001111)
 				{
 					Android.App.AlertDialog.Builder alertDialog = new Android.App.AlertDialog.Builder(this);
 					alertDialog.SetTitle("No targets found");
@@ -99,7 +99,7 @@ namespace BlueToothTest
 					});
 					alertDialog.Show();
 				}
-				else if (targetStateManager.State == (int)TargetState.sendGameMode && (dataReceived & 0b00001111) == 0b00011111)// up to 15 targets
+				else if (targetStateManager.State == (int)TargetState.sendGameMode && (dataReceived & 0b00001111) == 0b00001111)// up to 15 targets
 				{
 					DynamicalyPopulateTargets((dataReceived>>4)); //Dynamicaly generate target UI
 												  //Send Game mode
@@ -164,8 +164,8 @@ namespace BlueToothTest
 
 		public void closeApplication()
 		{
-			var activity = (Activity)Android.Context;
-			activity.FinishAffinity();
+			//var activity = (Activity)Android.Context;
+			//activity.FinishAffinity();
 		}
 	}
 }

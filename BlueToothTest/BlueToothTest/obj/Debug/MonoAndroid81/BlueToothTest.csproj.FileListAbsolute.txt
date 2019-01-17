@@ -1,9 +1,9 @@
+C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\MonoAndroid81\res.flag
+C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\MonoAndroid81\BlueToothTest.csproj.CoreCompileInputs.cache
 C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\bin\Debug\BlueToothTest.dll
 C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\bin\Debug\BlueToothTest.pdb
 C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\bin\Debug\BlueToothTest.BlueToothTest.apk
 C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\bin\Debug\BlueToothTest.BlueToothTest-Signed.apk
-C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\MonoAndroid81\res.flag
-C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\MonoAndroid81\BlueToothTest.csproj.CoreCompileInputs.cache
 C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\MonoAndroid81\BlueToothTest.dll
 C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\MonoAndroid81\BlueToothTest.pdb
 C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\MonoAndroid81\android\bin\BlueToothTest.BlueToothTest.apk
@@ -57,6 +57,7 @@ C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\
 C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\MonoAndroid81\linksrc\System.Runtime.Serialization.pdb
 C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\MonoAndroid81\linksrc\System.ServiceModel.Internals.pdb
 C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\MonoAndroid81\linksrc\Mono.Security.pdb
+C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\MonoAndroid81\BlueToothTest.csprojAssemblyReference.cache
 C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\MonoAndroid81\android\assets\BlueToothTest.pdb
 C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\MonoAndroid81\android\assets\Mono.Android.pdb
 C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\MonoAndroid81\android\assets\Mono.Security.pdb
@@ -68,5 +69,4 @@ C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\
 C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\MonoAndroid81\android\assets\System.Runtime.Serialization.pdb
 C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\MonoAndroid81\android\assets\System.ServiceModel.Internals.pdb
 C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\MonoAndroid81\android\assets\System.Xml.pdb
-C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\MonoAndroid81\BlueToothTest.csprojAssemblyReference.cache
 C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\MonoAndroid81\linksrc\BlueToothTest.pdb

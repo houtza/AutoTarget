@@ -48,6 +48,7 @@
 
 #include <esp_now.h>
 #include <WiFi.h>
+#include <HardwareSerial.h>
 
 // Global copy of slave
 #define NUMSLAVES 20
@@ -55,6 +56,7 @@
 #define PRINTSCANRESULTS 0
 
 esp_now_peer_info_t slaves[NUMSLAVES] = {};
+HardwareSerial MySerial(1);
 
 int waitForPhoneInitiation = 0;
 int setUpTargets = 1;
@@ -68,8 +70,10 @@ int LED = 2;
 bool scanForSlaveFlag = true;
 bool LEDToggle =false;
 bool mailToSend = false;
+bool tempFags = true;
 byte rxbyte = 0;  // stores received byte from HC-06 bluetooth module
 byte HCO6_tx_byte = 0;  // stores sent byte to HC-06 bluetooth module
+byte sendToPhoneData =0;
 
 char macAddressList[20][18];
 // Init ESP Now with fallback
@@ -221,7 +225,7 @@ void sendData(long slaveNumber) {
 void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
   char macStr[18];
   snprintf(macStr, sizeof(macStr), "%02x:%02x:%02x:%02x:%02x:%02x",
-           mac_addr[0], mac_addr[1], mac_addr[2], mac_addr[3], mac_addr[4], mac_addr[5]);
+           mac_addr[0], mac_addr[1], mac_addr[2], mac_addr[3], mac_addr[4], (mac_addr[5]+1));
   //Serial.print("Last Packet Sent to: "); Serial.println(macStr);
   //Serial.print("Last Packet Send Status: "); Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail");
 }
@@ -229,11 +233,55 @@ void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
 
 void OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len) {
   char macStr[18];
-  snprintf(macStr, sizeof(macStr), "%02x:%02x:%02x:%02x:%02x:%02x",
-           mac_addr[0], mac_addr[1], mac_addr[2], mac_addr[3], mac_addr[4], mac_addr[5]);
- // Serial.print("Last Packet Recv from: "); Serial.println(macStr);
+  byte tmp = mac_addr[5]+1;
+  byte tmpMacPlusOne = 0;
+  //snprintf(macStr, sizeof(macStr), "%02x:%02x:%02x:%02x:%02x:%02x",
+           //mac_addr[0], mac_addr[1], mac_addr[2], mac_addr[3], mac_addr[4], tmp);
+  //Serial.print("Last Packet Recv from: "); 
+  //Serial.println(macStr);
  // Serial.print("Last Packet Recv Data: "); Serial.println(*data);
   //Serial.println("");
+  int i =-1;
+  bool senderFound = false;
+  Serial.println(SlaveCnt);
+  while(!senderFound and i<=SlaveCnt){
+    i++;
+    senderFound = true;
+    
+    //snprintf(macStr, sizeof(macStr), "%02x:%02x:%02x:%02x:%02x:%02x",
+           //slaves[i].peer_addr[0], slaves[i].peer_addr[1], slaves[i].peer_addr[2], slaves[i].peer_addr[3], slaves[i].peer_addr[4], slaves[i].peer_addr[5]);
+    //Serial.println(macStr);
+   
+    if(mac_addr[0] != slaves[i].peer_addr[0]){
+      senderFound = false;      
+    }
+    
+    if(mac_addr[1] != slaves[i].peer_addr[1]){
+      senderFound = false;
+    }
+    
+    if(mac_addr[2] != slaves[i].peer_addr[2]){
+      senderFound = false;
+    }
+    
+    if(mac_addr[3] != slaves[i].peer_addr[3]){
+      senderFound = false;
+    }
+   
+    if(mac_addr[4] != slaves[i].peer_addr[4]){
+      senderFound = false;
+    }
+   
+    tmpMacPlusOne = mac_addr[5]+1;
+    
+    if(tmpMacPlusOne != slaves[i].peer_addr[5]){
+      senderFound = false;
+    }
+  }
+  if(senderFound){
+    //Serial.print(sendToPhoneData);
+    sendToPhoneData = (i+1)<<4;
+  }
   mailToSend = true;
   digitalWrite(LED,HIGH);
  
@@ -242,7 +290,8 @@ void OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len) {
 
 void setup() {
   pinMode(LED,OUTPUT);
-  Serial.begin(9500);
+  MySerial.begin(9600, SERIAL_8N1, 16, 17);
+  Serial.begin(115200);
   //Serial.begin(115200);
   //uint8_t new_mac[8] = {0x30,0xAE,0xA4,0x11,0x11,0x11};//---------------------------------------------
   //esp_base_mac_addr_set(new_mac);
@@ -261,9 +310,9 @@ void setup() {
 
 void loop() {
   rxbyte = 0b00000000;
-  if (Serial.available()) {
+  if (MySerial.available()) {
     //---------------------------------------------------
-    rxbyte = Serial.read();
+    rxbyte = MySerial.read();
   }
   //delay(50);
   //Serial.write(rxbyte);
@@ -272,8 +321,8 @@ void loop() {
     gameState = setUpTargets;
     gameMode = (rxbyte & 0b11110000) >> 4; //Set game mode
     //Serial.write(11);
-    delay(10);
-    Serial.write(10);
+    //delay(10);
+    //Serial.write(10);
   }
 
   
@@ -282,33 +331,46 @@ void loop() {
     manageSlave();
 
 
-    for(int slaveNum = 0;slaveNum<SlaveCnt;slaveNum++){ //Get slave mac addresses, and store all of them as a string in a 2D char array
-       uint8_t *mac_addr = slaves[slaveNum].peer_addr;
+    //for(int slaveNum = 0;slaveNum<SlaveCnt;slaveNum++){ //Get slave mac addresses, and store all of them as a string in a 2D char array
+       //uint8_t *mac_addr = slaves[slaveNum].peer_addr;
 
-       snprintf(macAddressList[slaveNum], sizeof(macAddressList[slaveNum]), "%02x:%02x:%02x:%02x:%02x:%02x",
-           mac_addr[0], mac_addr[1], mac_addr[2], mac_addr[3], mac_addr[4], mac_addr[5]);
+       //snprintf(macAddressList[slaveNum], sizeof(macAddressList[slaveNum]), "%02x:%02x:%02x:%02x:%02x:%02x",
+           //mac_addr[0], mac_addr[1], mac_addr[2], mac_addr[3], mac_addr[4], mac_addr[5]);
       
-    }
+    //}
     
     
     sendData(random(SlaveCnt)); //Activate a randome slave (pop up)
     scanForSlaveFlag = false;
     byte slaveCount = (byte)SlaveCnt;
+    
+    
     slaveCount = (slaveCount <<4) | 0b00001111;
-    Serial.write(slaveCount);
+    MySerial.write(slaveCount);
+    delay(10);
+    MySerial.write(0b11111111);
+    delay(10);
+    
   }
   
   
+  
+ 
   if (SlaveCnt > 0 && mailToSend) { // check if slave channel is defined
     // `slave` is defined
     // Add slave as peer if it has not been added already
     manageSlave();
     // pair success or already paired
     // Send data to device
-       
+    delay(10);
+    //Serial.println("ha");
+    MySerial.write(sendToPhoneData);
     sendData(random(SlaveCnt));
     digitalWrite(LED,LOW);
+    delay(10);
     mailToSend = false;
+    //tempFags = false;
+    
     //}
     
   } else {
@@ -316,5 +378,5 @@ void loop() {
   }
 
   
-  delay(10); // wait for 1 seconds to run the logic again
+  //delay(10); // wait for 1 seconds to run the logic again
 }

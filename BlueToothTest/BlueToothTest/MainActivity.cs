@@ -18,7 +18,12 @@ namespace BlueToothTest
     {
 
 		int gameMode = -1;
-		
+		private System.Timers.Timer _timer;
+
+		public override void OnBackPressed()
+		{
+			return;
+		}
 
 		protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -27,11 +32,8 @@ namespace BlueToothTest
 			base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.content_main);
 
-            
 
-            
-
-            
+			
 
 			var edtFirstText = FindViewById<EditText>(Resource.Id.edtFirstText);
 
@@ -57,7 +59,6 @@ namespace BlueToothTest
 					StartActivity(targetActivity);
 				}
 				
-
 			};
 
             			

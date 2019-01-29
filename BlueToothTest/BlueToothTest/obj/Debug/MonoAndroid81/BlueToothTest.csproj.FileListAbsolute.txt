@@ -7,7 +7,6 @@ C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\
 C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\MonoAndroid81\BlueToothTest.dll
 C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\MonoAndroid81\BlueToothTest.pdb
 C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\MonoAndroid81\android\bin\BlueToothTest.BlueToothTest.apk
-C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\MonoAndroid81\res\layout\activity_main.xml
 C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\MonoAndroid81\res\layout\content_main.xml
 C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\MonoAndroid81\res\values\colors.xml
 C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\MonoAndroid81\res\values\dimens.xml

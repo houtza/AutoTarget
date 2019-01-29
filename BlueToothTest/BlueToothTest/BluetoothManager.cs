@@ -149,6 +149,7 @@ namespace BlueToothTest
                 {
                     //search threw all paired devices
                     //mDevice.Name.Split(' ');
+					
                     openDeviceConnection(mDevice);
                 }
             }

@@ -2382,8 +2382,8 @@ namespace BlueToothTest
 			// aapt resource value: 0x7F0C0011
 			public const int action_mode_close_button = 2131492881;
 			
-			// aapt resource value: 0x7F020011
-			public const int action_settings = 2130837521;
+			// aapt resource value: 0x7F020009
+			public const int action_settings = 2130837513;
 			
 			// aapt resource value: 0x7F0C0004
 			public const int action_text = 2131492868;
@@ -2409,8 +2409,8 @@ namespace BlueToothTest
 			// aapt resource value: 0x7F0C001A
 			public const int bottom = 2131492890;
 			
-			// aapt resource value: 0x7F020010
-			public const int btnDisplay = 2130837520;
+			// aapt resource value: 0x7F020008
+			public const int btnDisplay = 2130837512;
 			
 			// aapt resource value: 0x7F0C001B
 			public const int buttonPanel = 2131492891;
@@ -2466,8 +2466,8 @@ namespace BlueToothTest
 			// aapt resource value: 0x7F0C002C
 			public const int edit_query = 2131492908;
 			
-			// aapt resource value: 0x7F020009
-			public const int edtFirstText = 2130837513;
+			// aapt resource value: 0x7F020007
+			public const int edtFirstText = 2130837511;
 			
 			// aapt resource value: 0x7F0C002D
 			public const int end = 2131492909;
@@ -2480,9 +2480,6 @@ namespace BlueToothTest
 			
 			// aapt resource value: 0x7F0C002F
 			public const int expand_activities_button = 2131492911;
-			
-			// aapt resource value: 0x7F020003
-			public const int fab = 2130837507;
 			
 			// aapt resource value: 0x7F0C0031
 			public const int fill = 2131492913;
@@ -2520,8 +2517,8 @@ namespace BlueToothTest
 			// aapt resource value: 0x7F0C003C
 			public const int largeLabel = 2131492924;
 			
-			// aapt resource value: 0x7F020004
-			public const int layoutBase = 2130837508;
+			// aapt resource value: 0x7F020002
+			public const int layoutBase = 2130837506;
 			
 			// aapt resource value: 0x7F0C003D
 			public const int left = 2131492925;
@@ -2673,8 +2670,8 @@ namespace BlueToothTest
 			// aapt resource value: 0x7F0C006E
 			public const int spacer = 2131492974;
 			
-			// aapt resource value: 0x7F020006
-			public const int spinner = 2130837510;
+			// aapt resource value: 0x7F020004
+			public const int spinner = 2130837508;
 			
 			// aapt resource value: 0x7F0C006F
 			public const int split_action_bar = 2131492975;
@@ -2691,8 +2688,8 @@ namespace BlueToothTest
 			// aapt resource value: 0x7F0C0073
 			public const int start = 2131492979;
 			
-			// aapt resource value: 0x7F020007
-			public const int startBtn = 2130837511;
+			// aapt resource value: 0x7F020005
+			public const int startBtn = 2130837509;
 			
 			// aapt resource value: 0x7F0C0074
 			public const int status_bar_latest_event_content = 2131492980;
@@ -2709,8 +2706,8 @@ namespace BlueToothTest
 			// aapt resource value: 0x7F0C0016
 			public const int tag_transition_group = 2131492886;
 			
-			// aapt resource value: 0x7F020008
-			public const int text = 2130837512;
+			// aapt resource value: 0x7F020006
+			public const int text = 2130837510;
 			
 			// aapt resource value: 0x7F0C0018
 			public const int text2 = 2131492888;
@@ -2727,8 +2724,8 @@ namespace BlueToothTest
 			// aapt resource value: 0x7F0C007C
 			public const int textSpacerNoTitle = 2131492988;
 			
-			// aapt resource value: 0x7F020005
-			public const int textView1 = 2130837509;
+			// aapt resource value: 0x7F020003
+			public const int textView1 = 2130837507;
 			
 			// aapt resource value: 0x7F0C007D
 			public const int text_input_password_toggle = 2131492989;
@@ -2744,9 +2741,6 @@ namespace BlueToothTest
 			
 			// aapt resource value: 0x7F0C0083
 			public const int title_template = 2131492995;
-			
-			// aapt resource value: 0x7F020002
-			public const int toolbar = 2130837506;
 			
 			// aapt resource value: 0x7F0C0084
 			public const int top = 2131492996;
@@ -2922,10 +2916,7 @@ namespace BlueToothTest
 			public const int abc_select_dialog_material = 2131689498;
 			
 			// aapt resource value: 0x7F030002
-			public const int activity_main = 2130903042;
-			
-			// aapt resource value: 0x7F030003
-			public const int content_main = 2130903043;
+			public const int content_main = 2130903042;
 			
 			// aapt resource value: 0x7F0F001B
 			public const int design_bottom_navigation_item = 2131689499;
@@ -3026,8 +3017,8 @@ namespace BlueToothTest
 			// aapt resource value: 0x7F0F003B
 			public const int support_simple_spinner_dropdown_item = 2131689531;
 			
-			// aapt resource value: 0x7F030004
-			public const int target_control_activity = 2130903044;
+			// aapt resource value: 0x7F030003
+			public const int target_control_activity = 2130903043;
 			
 			// aapt resource value: 0x7F0F003C
 			public const int tooltip = 2131689532;

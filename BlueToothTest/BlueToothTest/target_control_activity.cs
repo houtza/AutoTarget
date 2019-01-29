@@ -16,6 +16,7 @@ namespace BlueToothTest
 	public class target_control_activity : Activity
 	{
 		int gameMode = 0;
+		int targetsDeployed = 0;
 		private String dataPast = null;
 		private String data = null;
 		public bool exceptDataFromESP = false;
@@ -25,6 +26,11 @@ namespace BlueToothTest
 		public TargetStateManager targetStateManager = new TargetStateManager();
 		public MailBox mailBox = new MailBox();
 		public TargetManager targetManager = new TargetManager();
+
+		public override void OnBackPressed()
+		{
+			return;
+		}
 
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
@@ -48,10 +54,14 @@ namespace BlueToothTest
 
 			var btnDisplay = FindViewById<Button>(Resource.Id.btnDisplay);
 
+
+			 
+
 			btnDisplay.Click += (e, o) =>
 			{
+				
 				exceptDataFromESP = true;
-				//currentCharacterName.Text = edtFirstText.Text;
+				//currentCharacterName.Text = gameMode.ToString();
 				manager.sendDataToDevice(edtFirstText.Text);//----
 			};
 
@@ -81,7 +91,7 @@ namespace BlueToothTest
 		}
 
 
-
+		
 
 
 		public void OnMailReceived(byte dataReceived)
@@ -106,7 +116,7 @@ namespace BlueToothTest
 				else if (targetStateManager.State == (int)TargetState.sendGameMode && (dataReceived & 0b00001111) == 0b00001111)// up to 15 targets
 				{
 					DynamicalyPopulateTargets((dataReceived >> 4)); //Dynamicaly generate target UI
-																	//Send Game mode
+					targetsDeployed = dataReceived >> 4;
 				}
 				else if (targetStateManager.State == (int)TargetState.gameMode && dataReceived == 0b11111111)
 				{
@@ -147,29 +157,7 @@ namespace BlueToothTest
 
 
 
-		public override bool OnCreateOptionsMenu(IMenu menu)
-		{
-			MenuInflater.Inflate(Resource.Menu.menu_main, menu);
-			return true;
-		}
-
-		public override bool OnOptionsItemSelected(IMenuItem item)
-		{
-			int id = item.ItemId;
-			if (id == Resource.Id.action_settings)
-			{
-				return true;
-			}
-
-			return base.OnOptionsItemSelected(item);
-		}
-
-		private void FabOnClick(object sender, EventArgs eventArgs)
-		{
-			View view = (View)sender;
-			Snackbar.Make(view, "Replace with your own action", Snackbar.LengthLong)
-				.SetAction("Action", (Android.Views.View.IOnClickListener)null).Show();
-		}
+		
 
 		public void closeApplication()
 		{

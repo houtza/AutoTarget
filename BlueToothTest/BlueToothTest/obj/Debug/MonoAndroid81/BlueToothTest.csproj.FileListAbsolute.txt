@@ -31,7 +31,6 @@ C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\
 C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\MonoAndroid81\res\mipmap-xxxhdpi\ic_launcher.png
 C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\MonoAndroid81\res\mipmap-xxxhdpi\ic_launcher_foreground.png
 C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\MonoAndroid81\res\mipmap-xxxhdpi\ic_launcher_round.png
-C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\MonoAndroid81\res\drawable\target.png
 C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\MonoAndroid81\res\layout\target_control_activity.xml
 C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\MonoAndroid81\R.cs.flag
 C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\MonoAndroid81\R.txt
@@ -69,4 +68,8 @@ C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\
 C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\MonoAndroid81\android\assets\System.ServiceModel.Internals.pdb
 C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\MonoAndroid81\android\assets\System.Xml.pdb
 C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\MonoAndroid81\BlueToothTest.csprojAssemblyReference.cache
+C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\MonoAndroid81\res\drawable\targetup.png
+C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\MonoAndroid81\res\drawable\targethitcenter.png
+C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\MonoAndroid81\res\drawable\targethitouter.png
+C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\MonoAndroid81\res\drawable\targetretracted.png
 C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\MonoAndroid81\linksrc\BlueToothTest.pdb

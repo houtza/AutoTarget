@@ -35,12 +35,13 @@ namespace BlueToothTest
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
 
-			mailBox.MailReceived += OnMailReceived;
+			//mailBox.MailReceived += OnMailReceived;
 			base.OnCreate(savedInstanceState);
 
 			// Create your application here
 
 			SetContentView(Resource.Layout.target_control_activity);
+			mailBox.MailReceived += OnMailReceived;
 			gameMode = Intent.GetIntExtra("gameMode", -1);
 
 
@@ -135,14 +136,35 @@ namespace BlueToothTest
 
 
 
+		//public void DynamicalyPopulateTargets(int targetToAdd)
+		//{
+		//	LinearLayout layoutBase = FindViewById<LinearLayout>(Resource.Id.layoutBase);
+		//	for (int i = 0; i < targetToAdd; i++)
+		//	{
+
+		//		var FakeTarget = new TextView(this);
+		//		FakeTarget.Text = ("Target" + i.ToString());
+		//		FakeTarget.Id = i + 1;
+
+		//		Target target = new Target(FakeTarget);
+
+		//		layoutBase.AddView(FakeTarget);
+
+		//		targetManager.TargetList.Add(target);
+		//	}
+		//}
+
 		public void DynamicalyPopulateTargets(int targetToAdd)
 		{
 			LinearLayout layoutBase = FindViewById<LinearLayout>(Resource.Id.layoutBase);
 			for (int i = 0; i < targetToAdd; i++)
 			{
 
-				var FakeTarget = new TextView(this);
-				FakeTarget.Text = ("Target" + i.ToString());
+				var FakeTarget = new ImageView(this);
+				int resourceId = (int)typeof(Resource.Drawable).GetField("targetUp").GetValue(null);
+				FakeTarget.SetImageResource(resourceId);
+				
+				//FakeTarget.Text = ("Target" + i.ToString());
 				FakeTarget.Id = i + 1;
 
 				Target target = new Target(FakeTarget);
@@ -157,7 +179,6 @@ namespace BlueToothTest
 
 
 
-		
 
 		public void closeApplication()
 		{

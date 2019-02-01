@@ -2307,7 +2307,16 @@ namespace BlueToothTest
 			public const int notify_panel_notification_icon_bg = 2131296268;
 			
 			// aapt resource value: 0x7F010002
-			public const int target = 2130771970;
+			public const int targetHitCenter = 2130771970;
+			
+			// aapt resource value: 0x7F010003
+			public const int targetHitOuter = 2130771971;
+			
+			// aapt resource value: 0x7F010004
+			public const int targetRetracted = 2130771972;
+			
+			// aapt resource value: 0x7F010005
+			public const int targetUp = 2130771973;
 			
 			// aapt resource value: 0x7F090069
 			public const int tooltip_frame_dark = 2131296361;

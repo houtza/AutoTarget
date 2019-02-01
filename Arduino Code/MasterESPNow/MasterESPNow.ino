@@ -196,7 +196,7 @@ void sendData(byte data) { //void sendData(long slaveNumber) {
   uint8_t dataToSend = (uint8_t)data; 
   //data++;
  
-   const uint8_t *peer_addr = slaves[slaveNumber].peer_addr;
+   const uint8_t *peer_addr = slaves[slaveNumber-1].peer_addr;
     
     esp_err_t result = esp_now_send(peer_addr, &dataToSend, sizeof(data));
     //Serial.print("Send Status: ");

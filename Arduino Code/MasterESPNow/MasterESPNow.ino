@@ -58,6 +58,8 @@
 esp_now_peer_info_t slaves[NUMSLAVES] = {};
 HardwareSerial MySerial(1);
 
+int  x;
+
 int waitForPhoneInitiation = 0;
 int setUpTargets = 1;
 //int waitForStartFromPhone = 2;
@@ -242,7 +244,7 @@ void OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len) {
   //Serial.println("");
   int i =-1;
   bool senderFound = false;
-  Serial.println(SlaveCnt);
+  //Serial.println(SlaveCnt);
   while(!senderFound and i<=SlaveCnt){
     i++;
     senderFound = true;
@@ -312,7 +314,9 @@ void loop() {
   if (MySerial.available()) {
     //---------------------------------------------------
     rxbyte = MySerial.read();
-
+    x = rxbyte; 
+    Serial.print("f");
+    Serial.println(x);
     if(gameMode == beginGame){
       manageSlave();
       sendData(rxbyte);
@@ -327,7 +331,8 @@ void loop() {
   
   if(scanForSlaveFlag && gameState == setUpTargets){
     scanForSlaveFlag = false;
-    ScanForSlave(); //In the loop we can scan at the beginning for slaves 1 time   
+    ScanForSlave(); //In the loop we can scan at the beginning for slaves 1 time 
+    //delay(10000);  
     manageSlave();
     gameMode = beginGame;
 
@@ -341,9 +346,17 @@ void loop() {
     
     
     slaveCount = (slaveCount <<4) | 0b00001111;
+    //Serial.write(slaveCount); 
+    delay(2000);
     MySerial.write(slaveCount); //Send target count to app
-    delay(10);
+    
+    x = slaveCount; 
+    Serial.print("e");
+    Serial.println(x);
+    
+    delay(2000);
     MySerial.write(0b11111111); //Tell app to enter game mode
+    
     delay(10);
     
   }
@@ -360,6 +373,10 @@ void loop() {
     delay(10);
     
     MySerial.write(sendToPhoneData);
+
+     x = sendToPhoneData; 
+    Serial.print("e");
+    Serial.println(x);
     //sendData(random(SlaveCnt));---------
     digitalWrite(LED,LOW);
     delay(10);

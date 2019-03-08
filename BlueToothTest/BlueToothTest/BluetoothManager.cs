@@ -147,10 +147,12 @@ namespace BlueToothTest
             {
                 foreach (BluetoothDevice mDevice in devices)
                 {
-                    //search threw all paired devices
-                    //mDevice.Name.Split(' ');
-					
-                    openDeviceConnection(mDevice);
+					//search threw all paired devices
+					//mDevice.Name.Split(' ');
+					string test = mDevice.Name;
+
+
+					openDeviceConnection(mDevice);
                 }
             }
         }

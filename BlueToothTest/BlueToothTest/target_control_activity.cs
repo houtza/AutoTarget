@@ -54,14 +54,12 @@ namespace BlueToothTest
 			var edtFirstText = FindViewById<EditText>(Resource.Id.edtFirstText);
 
 			var btnDisplay = FindViewById<Button>(Resource.Id.btnDisplay);
-
-
 			 
-
 			btnDisplay.Click += (e, o) =>
 			{
 				
 				exceptDataFromESP = true;
+				//manager.sendDataToDevice(Convert.ToString(15));//-------------
 				//currentCharacterName.Text = gameMode.ToString();
 				manager.sendDataToDevice(edtFirstText.Text);//----
 			};
@@ -87,8 +85,8 @@ namespace BlueToothTest
 
 
 
-			exceptDataFromESP = true;
-			manager.sendDataToDevice(Convert.ToString(15));
+			//exceptDataFromESP = true;
+			//manager.sendDataToDevice(Convert.ToString(15));
 		}
 
 

@@ -158,11 +158,12 @@ namespace BlueToothTest
 			for (int i = 0; i < targetToAdd; i++)
 			{
 
-				var FakeTarget = new ImageView(this);
-				int resourceId = (int)typeof(Resource.Drawable).GetField("targetUp").GetValue(null);
-				FakeTarget.SetImageResource(resourceId);
+				//var FakeTarget = new ImageView(this);
+				var FakeTarget = new TextView(this);
+				//int resourceId = (int)typeof(Resource.Drawable).GetField("targetUp").GetValue(null);
+				//FakeTarget.SetImageResource(resourceId);
 				
-				//FakeTarget.Text = ("Target" + i.ToString());
+				FakeTarget.Text = ("Target" + i.ToString());
 				FakeTarget.Id = i + 1;
 
 				Target target = new Target(FakeTarget);

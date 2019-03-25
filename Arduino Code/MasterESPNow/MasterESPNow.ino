@@ -347,7 +347,7 @@ void loop() {
     
     slaveCount = (slaveCount <<4) | 0b00001111;
     //Serial.write(slaveCount); 
-    delay(2000);
+    //delay(2000);-----------------------------------------------
     MySerial.write(slaveCount); //Send target count to app
     
     x = slaveCount; 

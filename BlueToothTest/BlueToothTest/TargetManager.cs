@@ -32,7 +32,7 @@ namespace BlueToothTest
 				if (tempTarget.TargetPosition)
 				{
 					tempTarget.Retract();
-				}
+				}  
 				else
 				{
 					tempTarget.Extend();

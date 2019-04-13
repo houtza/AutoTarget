@@ -47,13 +47,18 @@ int LED = 2;
 bool LEDToggle =false;
 bool firstCallFromMaster = true;
 bool mailToSend = false;
+int targetHitZone = 0;
 
 //Interupt Stuff----------------------------------
-const byte interruptPin = 0;
+const byte interruptPinBullsEye = 0;
 volatile int interruptCounter = 0;
 int numberOfInterrupts = 0;
 
 portMUX_TYPE mux = portMUX_INITIALIZER_UNLOCKED;
+
+
+const byte interruptPinOuterRing = 15;
+
 //-------------------------------------------------
 
 
@@ -61,7 +66,7 @@ portMUX_TYPE mux = portMUX_INITIALIZER_UNLOCKED;
 uint8_t data = 0;
 // send data
 void sendData() {
-  data++;
+  data = targetHitZone;
   const uint8_t *peer_addr = slave.peer_addr;
   Serial.print("Sending: "); Serial.println(data);
   esp_err_t result = esp_now_send(peer_addr, &data, sizeof(data));
@@ -132,9 +137,18 @@ void configDeviceAP() {
   }
 }
 
-void IRAM_ATTR handleInterrupt() {
+void IRAM_ATTR handleInterruptBullsEye() {
   portENTER_CRITICAL_ISR(&mux);
   //interruptCounter++;
+  targetHitZone = 1;
+  mailToSend = true;
+  portEXIT_CRITICAL_ISR(&mux);
+}
+
+void IRAM_ATTR handleInterruptOuterRing() {
+  portENTER_CRITICAL_ISR(&mux);
+  //interruptCounter++;
+  targetHitZone = 2;
   mailToSend = true;
   portEXIT_CRITICAL_ISR(&mux);
 }
@@ -143,8 +157,10 @@ void setup() {
   myservo.attach(13);  // attaches the servo on pin 13 to the servo object
 
   //Interupt Stuff------------------
-  pinMode(interruptPin, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(interruptPin), handleInterrupt, RISING);
+  pinMode(interruptPinBullsEye, INPUT_PULLUP);
+  pinMode(interruptPinOuterRing, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(interruptPinBullsEye), handleInterruptBullsEye, RISING);
+  attachInterrupt(digitalPinToInterrupt(interruptPinOuterRing), handleInterruptOuterRing, RISING);
   //--------------------------------
   pinMode(LED,OUTPUT);
   

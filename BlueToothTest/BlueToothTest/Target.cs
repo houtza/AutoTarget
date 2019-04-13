@@ -50,12 +50,26 @@ namespace BlueToothTest
 		}
 
 
+		public void TargetHitBullsEye()
+		{
+			HitCount = HitCount + 1;
+			int resourceId = (int)typeof(Resource.Drawable).GetField("targetHitCenter").GetValue(null);
+			View.SetImageResource(resourceId);
+		}
+
+		public void TargetHitOuterRing()
+		{
+			HitCount = HitCount + 1;
+			int resourceId = (int)typeof(Resource.Drawable).GetField("targetHitOuter").GetValue(null);
+			View.SetImageResource(resourceId);
+		}
+
 		public void Retract()
 		{
 			TargetPosition = false;
 
 			//View.SetBackgroundColor(Color.Red);
-			HitCount = HitCount + 1;
+			//HitCount = HitCount + 1;
 			//View.Text = HitCount.ToString();
 			int resourceId = (int)typeof(Resource.Drawable).GetField("targetRetracted").GetValue(null);
 			View.SetImageResource(resourceId);

@@ -20,22 +20,31 @@ namespace BlueToothTest
 			
 			int targetNumber = data >> 4;
 			int hitLocation = (data & 0b00000110) >> 1;
+			int targetPositionControll = (data & 0b00000001);
 
 			Target tempTarget = TargetList[targetNumber-1];
 
 			if (hitLocation > 0) 
 			{
-				tempTarget.Retract();
+				if(hitLocation == 1)
+				{
+					tempTarget.TargetHitBullsEye();
+				}
+				else
+				{
+					tempTarget.TargetHitOuterRing();
+				}
+				//tempTarget.Retract();
 			}
 			else
 			{
-				if (tempTarget.TargetPosition)
+				if (targetPositionControll == 1) //Retract Target
 				{
 					tempTarget.Retract();
 				}
 				else
 				{
-					tempTarget.Extend();
+					tempTarget.Extend();   //Raise Target
 				}
 			}
 						
@@ -43,3 +52,25 @@ namespace BlueToothTest
 
 	}
 }
+
+
+//int targetNumber = data >> 4;
+//int hitLocation = (data & 0b00000111);  //int hitLocation = (data & 0b00000110) >> 1;
+
+//Target tempTarget = TargetList[targetNumber - 1];
+
+//			if (hitLocation > 0) 
+//			{
+//				tempTarget.Retract();
+//			}
+//			else
+//			{
+//				if (tempTarget.TargetPosition)
+//				{
+//					tempTarget.Retract();
+//				}
+//				else
+//				{
+//					tempTarget.Extend();
+//				}
+//			}

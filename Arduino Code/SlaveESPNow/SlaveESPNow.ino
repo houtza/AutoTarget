@@ -44,10 +44,16 @@ int pos = 0;    // variable to store the servo position
 
 #define CHANNEL 1
 int LED = 2;
+unsigned long previousMillis = 0;  // will store last time target poped up
+unsigned long currentMillis = 0;
+const long interval = 5000; //Interval at which to retract
 bool LEDToggle =false;
 bool firstCallFromMaster = true;
 bool mailToSend = false;
-int targetHitZone = 0;
+bool targetSetFlag = false;
+//int targetHitZone = 0;
+uint8_t slaveNumberID = 0;
+uint8_t targetHitData = 0;
 
 //Interupt Stuff----------------------------------
 const byte interruptPinBullsEye = 0;
@@ -63,10 +69,10 @@ const byte interruptPinOuterRing = 15;
 
 
 
-uint8_t data = 0;
+//uint8_t data = 0;
 // send data
-void sendData() {
-  data = targetHitZone;
+void sendData(uint8_t data) {
+  //data = targetHitZone;
   const uint8_t *peer_addr = slave.peer_addr;
   Serial.print("Sending: "); Serial.println(data);
   esp_err_t result = esp_now_send(peer_addr, &data, sizeof(data));
@@ -139,16 +145,18 @@ void configDeviceAP() {
 
 void IRAM_ATTR handleInterruptBullsEye() {
   portENTER_CRITICAL_ISR(&mux);
-  //interruptCounter++;
-  targetHitZone = 1;
+  targetSetFlag = false;
+  targetHitData = 0b0000010 | (slaveNumberID << 4);
+  //targetHitZone = 1;
   mailToSend = true;
   portEXIT_CRITICAL_ISR(&mux);
 }
 
 void IRAM_ATTR handleInterruptOuterRing() {
   portENTER_CRITICAL_ISR(&mux);
-  //interruptCounter++;
-  targetHitZone = 2;
+  targetSetFlag = false;
+  targetHitData = 0b0000100 | (slaveNumberID << 4);
+  //targetHitZone = 2;
   mailToSend = true;
   portEXIT_CRITICAL_ISR(&mux);
 }
@@ -185,6 +193,8 @@ void setup() {
 void OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len) {
   char macStr[18];
   if(firstCallFromMaster){
+    slaveNumberID = *data >>4;
+    Serial.println("ha");
     memset(&slave, 0, sizeof(slave));
     for (int i = 0; i < 6; ++i)
       slave.peer_addr[i] = (uint8_t)mac_addr[i]; //(uint8_t)mac_master[i];
@@ -202,35 +212,34 @@ void OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len) {
   Serial.println("");
   //LEDToggle = !LEDToggle;
   //if (LEDToggle == true){
-    digitalWrite(LED,HIGH);
-    myservo.write(10); // Raise target
-  //}
-  //else{
-    //digitalWrite(LED,LOW);
-  //}
-  //sendData();-------------------------------------
+  digitalWrite(LED,HIGH);
+  myservo.write(10); // Raise target
+  previousMillis = millis();
+  targetSetFlag = true;
+ 
 }
 
 void loop() {
-  //Serial.println("test");
-  //if(interruptCounter>0){
- 
-      //portENTER_CRITICAL(&mux);
-      //interruptCounter--;
-      //portEXIT_CRITICAL(&mux);
- 
-      //numberOfInterrupts++;
-      //Serial.print("An interrupt has occurred. Total: ");
-      //Serial.println(numberOfInterrupts);
-  //}
+
+  if(targetSetFlag){
+    currentMillis = millis();
+    if (currentMillis - previousMillis >= interval) {
+      mailToSend = true;
+      targetHitData = 0b0000001 | (slaveNumberID <<4 );
+      targetSetFlag = false;
+      Serial.println(targeHitData);
+    }
+  }
+  
+  
   if(mailToSend){
-    portENTER_CRITICAL(&mux);
+    portENTER_CRITICAL(&mux); //May need to remove?????????????????
     digitalWrite(LED,LOW);
     myservo.write(100); // Lower target
-    sendData();
+    sendData(targetHitData);
     mailToSend = false;
     Serial.println("test");
-    portEXIT_CRITICAL(&mux);
+    portEXIT_CRITICAL(&mux); //May need to remove??????????????
   }
   //sendData();
   //delay(1000);

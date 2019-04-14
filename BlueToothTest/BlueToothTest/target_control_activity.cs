@@ -159,7 +159,7 @@ namespace BlueToothTest
 			{
 
 				var FakeTarget = new ImageView(this);
-				int resourceId = (int)typeof(Resource.Drawable).GetField("targetUp").GetValue(null);
+				int resourceId = (int)typeof(Resource.Drawable).GetField("targetRetracted").GetValue(null);
 				FakeTarget.SetImageResource(resourceId);
 				
 				//FakeTarget.Text = ("Target" + i.ToString());

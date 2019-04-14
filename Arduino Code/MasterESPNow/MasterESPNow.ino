@@ -55,26 +55,34 @@
 #define CHANNEL 1//was 3
 #define PRINTSCANRESULTS 0
 
+portMUX_TYPE mux = portMUX_INITIALIZER_UNLOCKED;
 esp_now_peer_info_t slaves[NUMSLAVES] = {};
 HardwareSerial MySerial(1);
 
-unsigned long previousMillis = 0;
-long interval =0;
-int  x;
+byte tempRetractTarget = 0;
+unsigned long previousMillisHit = 0;
+unsigned long currentMillisHit = 0;
+bool needsHitIndication = false;
+const long intervalHitIndicator =500;
 
+int  x;
+int currentActiveTarget = 0;  //The target that is exposed at the moment
 int waitForPhoneInitiation = 0;
 int setUpTargets = 1;
 //int waitForStartFromPhone = 2;
 int beginGame = 2;
 int gameState = 0;
 int gameMode = 0;
+int pastTargetNumber = 0;
 
+byte nextTarget=0;
 int SlaveCnt = 0;
 int LED = 2;
 bool scanForSlaveFlag = true;
 bool LEDToggle =false;
 bool mailToSend = false;
 bool tempFags = true;
+bool needNewTarget = true;
 byte rxbyte = 0;  // stores received byte from HC-06 bluetooth module
 byte HCO6_tx_byte = 0;  // stores sent byte to HC-06 bluetooth module
 byte sendToPhoneData =0;
@@ -284,8 +292,9 @@ void OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len) {
   }
   if(senderFound){
     //Serial.print(sendToPhoneData);
-    sendToPhoneData = (i+1)<<4;
-    sendToPhoneData =sendToPhoneData | (hitData << 1);///////////////////////
+    //sendToPhoneData = (i+1)<<4;
+    //sendToPhoneData =sendToPhoneData | (hitData << 1);///////////////////////
+    sendToPhoneData = hitData;
     Serial.println(sendToPhoneData);//////////////////////////////////
   }
   mailToSend = true;
@@ -316,6 +325,7 @@ void setup() {
 
 void loop() {
   rxbyte = 0b00000000;
+  
   if (MySerial.available()) {  //Read serial sent from app
     //---------------------------------------------------
     rxbyte = MySerial.read();
@@ -326,6 +336,16 @@ void loop() {
       manageSlave();
       sendData(rxbyte);        //Send data to slave
     }
+  }
+
+
+  if(needNewTarget && (gameMode == beginGame)){ //Chooses a new target to pop up
+    needNewTarget = false;
+    nextTarget = random(1,SlaveCnt+1);
+    nextTarget = nextTarget << 4;
+    delay(200);
+    sendData(nextTarget); //Activate a randome slave (pop up)
+    MySerial.write(nextTarget);
   }
   
   if(gameState == waitForPhoneInitiation && (rxbyte & 0b00001111) == 0b00001111){  //If 15 sent from app
@@ -348,7 +368,7 @@ void loop() {
     //sendData(random(SlaveCnt)); //Activate a randome slave (pop up)////
     
     byte slaveCount = (byte)SlaveCnt;  //Number of targets
-       
+    //unsigned long appTargetHitTimeout[slaveCount-1];
     slaveCount = (slaveCount <<4) | 0b00001111;
     //Serial.write(slaveCount); 
     delay(2000);
@@ -366,6 +386,17 @@ void loop() {
   
  
   if (SlaveCnt > 0 && mailToSend) { // Update targets on app
+
+
+    if((sendToPhoneData & 0b00000110) >0){
+      tempRetractTarget = 0b00000001 | (sendToPhoneData & 0b11110000);
+      previousMillisHit = millis();
+      needsHitIndication = true;
+    }else{
+      needNewTarget = true;
+     }
+  
+
     
     delay(10);
     
@@ -374,6 +405,7 @@ void loop() {
      x = sendToPhoneData; 
     Serial.print("e");
     Serial.println(x);
+    
     //sendData(random(SlaveCnt));---------
     digitalWrite(LED,LOW);
     delay(10);
@@ -386,6 +418,15 @@ void loop() {
     // No slave found to process
   }
 
-  
+  if (needsHitIndication){
+    currentMillisHit = millis();
+    
+    if (currentMillisHit - previousMillisHit >= intervalHitIndicator){
+      needsHitIndication = false;
+      MySerial.write(tempRetractTarget); 
+      needNewTarget = true;        
+    }
+  }
+ 
   
 }

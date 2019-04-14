@@ -339,9 +339,20 @@ void loop() {
   }
 
 
-  if(needNewTarget && (gameMode == beginGame)){ //Chooses a new target to pop up
+  if(needNewTarget && (gameMode == beginGame)){ //Chooses a new target to pop up---------------------------------------------------------------------
     needNewTarget = false;
-    nextTarget = random(1,SlaveCnt+1);
+
+    if(SlaveCnt > 1){
+      nextTarget = random(1,SlaveCnt+1);
+      while(pastTargetNumber == nextTarget){
+        nextTarget = random(1,SlaveCnt+1);
+      }
+    }
+    else{
+      nextTarget = 1;
+    }
+    //nextTarget = random(1,SlaveCnt+1);
+    pastTargetNumber = nextTarget;
     nextTarget = nextTarget << 4;
     delay(200);
     sendData(nextTarget); //Activate a randome slave (pop up)

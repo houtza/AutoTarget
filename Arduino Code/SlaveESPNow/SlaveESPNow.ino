@@ -46,7 +46,7 @@ int pos = 0;    // variable to store the servo position
 int LED = 2;
 unsigned long previousMillis = 0;  // will store last time target poped up
 unsigned long currentMillis = 0;
-const long interval = 5000; //Interval at which to retract
+const long interval = 10000; //Interval at which to retract
 bool LEDToggle =false;
 bool firstCallFromMaster = true;
 bool mailToSend = false;
@@ -227,7 +227,7 @@ void loop() {
       mailToSend = true;
       targetHitData = 0b0000001 | (slaveNumberID <<4 );
       targetSetFlag = false;
-      Serial.println(targeHitData);
+      //Serial.println(targeHitData);
     }
   }
   

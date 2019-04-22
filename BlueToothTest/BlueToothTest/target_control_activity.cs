@@ -164,10 +164,35 @@ namespace BlueToothTest
 				
 				//FakeTarget.Text = ("Target" + i.ToString());
 				FakeTarget.Id = i + 1;
+				//------------------------------------
+				TextView TargetHitCounter = new TextView(this);
+				TargetHitCounter.Gravity = GravityFlags.Center;
+				//TargetHitCounter.Id = String.Concat("hitView", );
 
-				Target target = new Target(FakeTarget);
+				TargetHitCounter.Text = "Hit Count: ";
 
+				//-------------------------------------
+
+				Target target = new Target(FakeTarget,TargetHitCounter);
+
+				//---------------------------------------
+				
+
+				//LinearLayout TargetLL = new LinearLayout(this);
+				//TargetLL.Id = i + 1;
+				//TargetLL.Orientation = Orientation.Horizontal;
+				//TargetLL.AddView(FakeTarget);
+				//TargetLL.AddView(TargetHitCounter);
+
+
+				//------------------------------------------
+
+				//layoutBase.AddView(TargetLL);
 				layoutBase.AddView(FakeTarget);
+				layoutBase.AddView(TargetHitCounter);
+				TextView Space = new TextView(this);
+				Space.Text = "___________________________________________________";
+				layoutBase.AddView(Space);
 
 				targetManager.TargetList.Add(target);
 			}

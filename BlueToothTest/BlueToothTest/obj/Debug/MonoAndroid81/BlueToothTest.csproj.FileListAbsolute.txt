@@ -2,7 +2,6 @@ C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\bin\Debug\
 C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\bin\Debug\BlueToothTest.pdb
 C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\bin\Debug\BlueToothTest.BlueToothTest.apk
 C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\bin\Debug\BlueToothTest.BlueToothTest-Signed.apk
-C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\MonoAndroid81\BlueToothTest.csprojAssemblyReference.cache
 C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\MonoAndroid81\res.flag
 C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\MonoAndroid81\BlueToothTest.csproj.CoreCompileInputs.cache
 C:\Users\username\source\repos\AutoTarget\BlueToothTest\BlueToothTest\obj\Debug\MonoAndroid81\BlueToothTest.dll

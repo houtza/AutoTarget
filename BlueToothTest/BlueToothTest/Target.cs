@@ -16,7 +16,7 @@ namespace BlueToothTest
 	public class Target
 	{
 		public ImageView View { get; set; }
-		//public TextView View { get; set; }
+		public TextView DisplayHitCounter { get; set; }
 		public bool TargetPosition { get; set; }  //up = true, down = false
 		public int HitCount { get; set; }
 
@@ -43,9 +43,10 @@ namespace BlueToothTest
 		//	View.SetBackgroundColor(Color.Green);
 		//}
 
-		public Target(ImageView targetView)
+		public Target(ImageView targetView, TextView hitView)
 		{
 			View = targetView;
+			DisplayHitCounter = hitView;//--------
 			TargetPosition = false;
 		}
 
@@ -55,6 +56,7 @@ namespace BlueToothTest
 			HitCount = HitCount + 1;
 			int resourceId = (int)typeof(Resource.Drawable).GetField("targetHitCenter").GetValue(null);
 			View.SetImageResource(resourceId);
+			DisplayHitCounter.Text = String.Concat("Hit count: ", HitCount);//---
 		}
 
 		public void TargetHitOuterRing()
@@ -62,6 +64,7 @@ namespace BlueToothTest
 			HitCount = HitCount + 1;
 			int resourceId = (int)typeof(Resource.Drawable).GetField("targetHitOuter").GetValue(null);
 			View.SetImageResource(resourceId);
+			DisplayHitCounter.Text = String.Concat("Hit count: ", HitCount);//---
 		}
 
 		public void Retract()
